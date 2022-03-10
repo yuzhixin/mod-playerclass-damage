@@ -38,10 +38,10 @@ public:
 		uint32 count = 0;
 		do{
 			Field* fields = result->Fetch();
-			RegulatorContainer[fields[0].GetUInt32()] = fields[1].GetFloat();
+			RegulatorContainer[fields[0].Get<uint32>()] = fields[1].Get<float>();
 			++count;
 		} while (result->NextRow());
-		sLog->outString("Loaded %d regulated spells in %d ms", count, GetMSTimeDiffToNow(msTime));
+		LOG_INFO("server.loading", "Loaded {} regulated spells in {} ms", count, GetMSTimeDiffToNow(msTime));
 	}
 
 private:
