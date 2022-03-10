@@ -1,77 +1,76 @@
 diff --git a/src/server/game/Entities/Unit/Unit.cpp b/src/server/game/Entities/Unit/Unit.cpp
-index 28e7c390..c8d61cd3 100644
+index 3cd4b73e4..e17023713 100644
 --- a/src/server/game/Entities/Unit/Unit.cpp
 +++ b/src/server/game/Entities/Unit/Unit.cpp
-@@ -52,6 +52,7 @@
- #include "ArenaSpectator.h"
- #include "DynamicVisibility.h"
- #include "AccountMgr.h"
+@@ -71,6 +71,7 @@
+ #include "Tokenize.h"
+ #include "StringConvert.h"
+ #include <math.h>
 +#include "../../../modules/mod-spell-regulator/src/SpellRegulator.h"
  
- #ifdef ELUNA
- #include "LuaEngine.h"
-@@ -690,6 +691,11 @@ uint32 Unit::DealDamage(Unit* attacker, Unit* victim, uint32 damage, CleanDamage
- 
+ float baseMoveSpeed[MAX_MOVE_TYPE] =
+ {
+@@ -770,6 +771,11 @@ uint32 Unit::DealDamage(Unit* attacker, Unit* victim, uint32 damage, CleanDamage
      // Hook for OnDamage Event
      sScriptMgr->OnDamage(attacker, victim, damage);
-+    
+ 
 +    if ((damagetype == SPELL_DIRECT_DAMAGE || damagetype == DOT) && spellProto)
 +    {
 +		sSpellRegulator->Regulate(damage, spellProto->Id);
 +    }
- 
++
      if (victim->GetTypeId() == TYPEID_PLAYER && attacker != victim)
      {
-@@ -5625,6 +5631,7 @@ void Unit::SendSpellNonMeleeReflectLog(SpellNonMeleeDamage* log, Unit* attacker)
+         // Signal to pets that their owner was attacked
+@@ -5817,6 +5823,7 @@ void Unit::SendSpellNonMeleeReflectLog(SpellNonMeleeDamage* log, Unit* attacker)
  
  void Unit::SendSpellNonMeleeDamageLog(SpellNonMeleeDamage* log)
  {
-+    sSpellRegulator->Regulate(log->damage, log->SpellID);
++    sSpellRegulator->Regulate(log->damage, log->spellInfo->Id);
      WorldPacket data(SMSG_SPELLNONMELEEDAMAGELOG, (16 + 4 + 4 + 4 + 1 + 4 + 4 + 1 + 1 + 4 + 4 + 1)); // we guess size
-     data.append(log->target->GetPackGUID());
-     data.append(log->attacker->GetPackGUID());
-@@ -5672,6 +5679,7 @@ void Unit::SendPeriodicAuraLog(SpellPeriodicAuraLogInfo* pInfo)
+     //IF we are in cheat mode we swap absorb with damage and set damage to 0, this way we can still debug damage but our hp bar will not drop
+     uint32 damage = log->damage;
+@@ -5871,6 +5878,7 @@ void Unit::ProcDamageAndSpell(Unit* victim, uint32 procAttacker, uint32 procVict
+ void Unit::SendPeriodicAuraLog(SpellPeriodicAuraLogInfo* pInfo)
  {
      AuraEffect const* aura = pInfo->auraEff;
- 
 +    sSpellRegulator->Regulate(pInfo->damage, aura->GetId());
      WorldPacket data(SMSG_PERIODICAURALOG, 30);
-     data.append(GetPackGUID());
-     data.appendPackGUID(aura->GetCasterGUID());
+     data << GetPackGUID();
+     data << aura->GetCasterGUID().WriteAsPacked();
 diff --git a/src/server/scripts/Commands/cs_reload.cpp b/src/server/scripts/Commands/cs_reload.cpp
-index 3a18aaf7..305be1db 100644
+index 8cb93cf28..81580e85f 100644
 --- a/src/server/scripts/Commands/cs_reload.cpp
 +++ b/src/server/scripts/Commands/cs_reload.cpp
-@@ -30,6 +30,7 @@ EndScriptData */
+@@ -43,6 +43,7 @@ EndScriptData */
+ #include "Tokenize.h"
  #include "WardenCheckMgr.h"
- #include "WaypointManager.h"
- #include "GameGraveyard.h"
+ #include "WaypointMgr.h"
 +#include "../../../modules/mod-spell-regulator/src/SpellRegulator.h"
  
- class reload_commandscript : public CommandScript
- {
-@@ -140,6 +141,7 @@ public:
-             { "spell_target_position",        SEC_ADMINISTRATOR, true,  &HandleReloadSpellTargetPositionCommand,        "" },
-             { "spell_threats",                SEC_ADMINISTRATOR, true,  &HandleReloadSpellThreatsCommand,               "" },
-             { "spell_group_stack_rules",      SEC_ADMINISTRATOR, true,  &HandleReloadSpellGroupStackRulesCommand,       "" },
-+            { "spell_regulator",			  SEC_ADMINISTRATOR, true,  &HandleReloadSpellRegulator,                    "" },
-             { "acore_string",                 SEC_ADMINISTRATOR, true,  &HandleReloadAcoreStringCommand,              "" },
-             { "warden_action",                SEC_ADMINISTRATOR, true,  &HandleReloadWardenactionCommand,               "" },
-             { "waypoint_scripts",             SEC_ADMINISTRATOR, true,  &HandleReloadWpScriptsCommand,                  "" },
-@@ -188,6 +190,7 @@ public:
-         HandleReloadAutobroadcastCommand(handler, "");
-         HandleReloadBroadcastTextCommand(handler, "");
-         HandleReloadBattlegroundTemplate(handler, "");
-+        HandleReloadSpellRegulator(handler, "");
+ using namespace Acore::ChatCommands;
+ 
+@@ -159,6 +160,7 @@ public:
+             { "spell_target_position",         HandleReloadSpellTargetPositionCommand,        SEC_ADMINISTRATOR, Console::Yes },
+             { "spell_threats",                 HandleReloadSpellThreatsCommand,               SEC_ADMINISTRATOR, Console::Yes },
+             { "spell_group_stack_rules",       HandleReloadSpellGroupStackRulesCommand,       SEC_ADMINISTRATOR, Console::Yes },
++            { "spell_regulator",			   HandleReloadSpellRegulator,                    SEC_ADMINISTRATOR, Console::Yes },
+             { "player_loot_template",          HandleReloadLootTemplatesPlayerCommand,        SEC_ADMINISTRATOR, Console::Yes },
+             { "acore_string",                  HandleReloadAcoreStringCommand,                SEC_ADMINISTRATOR, Console::Yes },
+             { "warden_action",                 HandleReloadWardenactionCommand,               SEC_ADMINISTRATOR, Console::Yes },
+@@ -209,6 +211,7 @@ public:
+         HandleReloadAutobroadcastCommand(handler);
+         HandleReloadBroadcastTextCommand(handler);
+         HandleReloadBattlegroundTemplate(handler);
++        HandleReloadSpellRegulator(handler);
          return true;
      }
  
-@@ -916,6 +919,15 @@ public:
-         handler->SendGlobalGMSysMessage("DB table `spell_group_stack_rules` (spell stacking definitions) reloaded.");
+@@ -899,6 +902,15 @@ public:
          return true;
      }
-+    
-+   	static bool HandleReloadSpellRegulator(ChatHandler* handler, char const* /*args*/)
+ 
++   	static bool HandleReloadSpellRegulator(ChatHandler* handler)
 +	{
 +		#define sSpellRegulator SpellRegulator::instance()
 +
@@ -79,8 +78,7 @@ index 3a18aaf7..305be1db 100644
 +		handler->SendGlobalGMSysMessage("DB table `spell_regulator` reloaded.");
 +		return true;
 +	}
- 
-     static bool HandleReloadSpellPetAurasCommand(ChatHandler* handler, const char* /*args*/)
++
+     static bool HandleReloadSpellPetAurasCommand(ChatHandler* handler)
      {
--- 
-2.28.0.windows.1
+         LOG_INFO("server.loading", "Re-Loading Spell pet auras...");
