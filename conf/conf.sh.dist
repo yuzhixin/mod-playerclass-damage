@@ -1,9 +1,41 @@
-#!/usr/bin/env bash
+###########################################################
+# 💥 Mod Class Damage Regulator 配置文件
+# 设置各职业造成的伤害倍率（百分比），100.0 为正常伤害
+# 示例：110.0 表示伤害提高 10%，90.0 表示降低 10%
+###########################################################
 
-#
-# CUSTOM
-#
+# 战士（WARRIOR）
+ClassDamage.WARRIOR = 100.0
 
-DB_WORLD_CUSTOM_PATHS+=(
-    "$MOD_SPELLREGULATOR_ROOT/sql/world/"
-) 
+# 圣骑士（PALADIN）
+ClassDamage.PALADIN = 200.0
+
+# 猎人（HUNTER）
+ClassDamage.HUNTER = 105.0
+
+# 潜行者 / 盗贼（ROGUE）
+ClassDamage.ROGUE = 100.0
+
+# 牧师（PRIEST）
+ClassDamage.PRIEST = 90.0
+
+# 死亡骑士（DEATH_KNIGHT）
+ClassDamage.DEATH_KNIGHT = 100.0
+
+# 萨满祭司（SHAMAN）
+ClassDamage.SHAMAN = 95.0
+
+# 法师（MAGE）
+ClassDamage.MAGE = 110.0
+
+# 术士（WARLOCK）
+ClassDamage.WARLOCK = 105.0
+
+# 武僧（MONK）*若版本支持
+ClassDamage.MONK = 100.0
+
+# 德鲁伊（DRUID）
+ClassDamage.DRUID = 100.0
+
+# 恶魔猎手（DEMON_HUNTER）*若版本支持
+ClassDamage.DEMON_HUNTER = 100.0
