@@ -2,6 +2,8 @@
 
 #include "ScriptMgr.h"
 #include "Config.h"
+#include "Player.h"
+#include "SpellScript.h"
 #include <unordered_map>
 
 class ClassDamageRegulator
@@ -47,20 +49,20 @@ std::unordered_map<std::string, uint8> ClassDamageRegulator::ClassNameToId = {
 
 #define sClassDamageRegulator ClassDamageRegulator::instance()
 
-class ModClassDamageScript : public PlayerScript
+class ModClassDamageScript : public UnitScript
 {
 public:
-	ModClassDamageScript() : PlayerScript("ModClassDamageScript") {}
+	ModClassDamageScript() : UnitScript("ModClassDamageScript") {}
 
-	void OnDealDamage(Player *player, Unit *victim, uint32 &damage, DamageEffectType) override
+	virtual void ModifyMeleeDamage(Unit *attacker, Unit * /*victim*/, uint32 &damage) override
 	{
-		if (!player)
-			return;
-
-		float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
-		if (multiplier != 1.0f)
+		if (Player *player = attacker->ToPlayer())
 		{
-			damage = static_cast<uint32>(damage * multiplier);
+			float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
+			if (multiplier != 1.0f)
+			{
+				damage = static_cast<uint32>(damage * multiplier);
+			}
 		}
 	}
 };
@@ -76,8 +78,40 @@ public:
 	}
 };
 
+class ModClassDamageSpellScript : public SpellScriptLoader
+{
+public:
+	ModClassDamageSpellScript() : SpellScriptLoader("ModClassDamageSpellScript") {}
+
+	class ModClassDamageSpellScriptImpl : public SpellScript
+	{
+		PrepareSpellScript(ModClassDamageSpellScriptImpl);
+
+		void HandleHit()
+		{
+			if (Player *player = GetCaster()->ToPlayer())
+			{
+				float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
+				if (multiplier != 1.0f)
+					SetHitDamage(GetHitDamage() * multiplier);
+			}
+		}
+
+		void Register() override
+		{
+			OnHit += SpellHitFn(ModClassDamageSpellScriptImpl::HandleHit);
+		}
+	};
+
+	SpellScript *GetSpellScript() const override
+	{
+		return new ModClassDamageSpellScriptImpl();
+	}
+};
+
 void Addmod_class_damage_regulator()
 {
-	new ModClassDamageScript();
-	new ModClassDamageLoader();
+	new ModClassDamageScript();		 // 白字近战
+	new ModClassDamageSpellScript(); // 技能/法术
+	new ModClassDamageLoader();		 // 配置加载
 }

@@ -2,5 +2,5 @@
 
 void AddSC_SpellRegulator()
 {
-	new RegulatorLoader;
+        new ModClassDamageLoader;
 }
