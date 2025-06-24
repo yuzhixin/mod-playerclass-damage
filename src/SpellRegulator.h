@@ -81,6 +81,21 @@ public:
 	}
 };
 
+class ModClassDamageLoginScript : public PlayerScript
+{
+public:
+	ModClassDamageLoginScript() : PlayerScript("ModClassDamageLoginScript") {}
+
+	void OnLogin(Player* player) override
+	{
+		if (player->GetLevel() == 80)
+		{
+			float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
+			ChatHandler(player->GetSession()).PSendSysMessage("|cff00ff00[伤害调节]|r 你的职业伤害倍率: %.1f%%", multiplier * 100);
+		}
+	}
+};
+
 class ModClassDamageSpellScript : public SpellScriptLoader
 {
 public:
@@ -120,4 +135,5 @@ void Addmod_class_damage_regulator()
 	new ModClassDamageScript();		 // 白字近战
 	new ModClassDamageSpellScript(); // 技能/法术
 	new ModClassDamageLoader();		 // 配置加载
+	new ModClassDamageLoginScript(); // 登录提示
 }
