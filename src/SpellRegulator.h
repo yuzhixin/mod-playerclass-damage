@@ -20,7 +20,7 @@ public:
 		for (auto const &[name, id] : ClassNameToId)
 		{
 			std::string key = "ClassDamage." + name;
-			float val = sConfigMgr->GetValueDefault<float>(key.c_str(), 100.0f);
+			float val = sConfigMgr->GetOption<float>(key.c_str(), 100.0f);
 			modifiers[id] = val / 100.0f; // 转为倍率，例如 95.0 → 0.95
 		}
 
