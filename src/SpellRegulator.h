@@ -86,7 +86,7 @@ class ModClassDamageLoginScript : public PlayerScript
 public:
 	ModClassDamageLoginScript() : PlayerScript("ModClassDamageLoginScript") {}
 
-	void OnLogin(Player* player) override
+	virtual void OnLogin(Player *player) override
 	{
 		if (player->GetLevel() == 80)
 		{
