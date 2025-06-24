@@ -58,10 +58,13 @@ public:
 	{
 		if (Player *player = attacker->ToPlayer())
 		{
-			float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
-			if (multiplier != 1.0f)
+			if (player->GetLevel() == 80) // 仅80级角色应用倍率
 			{
-				damage = static_cast<uint32>(damage * multiplier);
+				float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
+				if (multiplier != 1.0f)
+				{
+					damage = static_cast<uint32>(damage * multiplier);
+				}
 			}
 		}
 	}
@@ -91,9 +94,12 @@ public:
 		{
 			if (Player *player = GetCaster()->ToPlayer())
 			{
-				float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
-				if (multiplier != 1.0f)
-					SetHitDamage(GetHitDamage() * multiplier);
+				if (player->GetLevel() == 80) // 仅80级角色应用倍率
+				{
+					float multiplier = sClassDamageRegulator->GetMultiplier(player->getClass());
+					if (multiplier != 1.0f)
+						SetHitDamage(GetHitDamage() * multiplier);
+				}
 			}
 		}
 
