@@ -122,8 +122,19 @@ public:
 
 void Addmod_spell_regulatorScripts()
 {
-	LOG_INFO("mod_class_damage_regulator", "Class Damage Regulator module loading...");
-	new ModClassDamageScript();		 // 白字近战
-	new ModClassDamageSpellScript(); // 技能/法术
-	new ModClassDamageLoader();		 // 配置加载
+	// 强制刷新日志系统
+	LOG_ERROR("server.loading", " ");
+	LOG_ERROR("server.loading", "########################################");
+	LOG_ERROR("server.loading", "# STARTING SPELL REGULATOR MODULE LOAD #");
+	LOG_ERROR("server.loading", "########################################");
+
+	// 初始化各组件
+	new ModClassDamageScript();
+	new ModClassDamageSpellScript();
+	new ModClassDamageLoader();
+
+	// 确认加载完成
+	LOG_ERROR("server.loading", "# SPELL REGULATOR MODULE LOADED #");
+	LOG_ERROR("server.loading", "################################");
+	LOG_ERROR("server.loading", " ");
 }
