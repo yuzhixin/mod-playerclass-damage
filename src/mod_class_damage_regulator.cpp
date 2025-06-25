@@ -122,6 +122,7 @@ public:
 
 void Addmod_spell_regulatorScripts()
 {
+	LOG_INFO("mod_class_damage_regulator", "Class Damage Regulator module loading...");
 	new ModClassDamageScript();		 // 白字近战
 	new ModClassDamageSpellScript(); // 技能/法术
 	new ModClassDamageLoader();		 // 配置加载
