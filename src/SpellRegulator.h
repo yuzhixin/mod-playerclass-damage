@@ -27,6 +27,6 @@ private:
 
 #define sClassDamageRegulator ClassDamageRegulator::instance()
 
-void Addmod_spell_regulatorScripts();
+void AddSC_mod_spell_regulator();
 
 #endif
