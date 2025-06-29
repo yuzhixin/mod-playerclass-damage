@@ -120,7 +120,7 @@ public:
 	}
 };
 
-void Addmod_spell_regulatorScripts()
+void AddSpellRegulatorScripts()
 {
 	// 强制刷新日志系统
 	LOG_ERROR("server.loading", " ");
