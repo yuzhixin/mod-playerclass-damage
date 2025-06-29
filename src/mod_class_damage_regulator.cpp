@@ -129,9 +129,9 @@ void AddSpellRegulatorScripts()
 	LOG_ERROR("server.loading", "########################################");
 
 	// 初始化各组件
-	new ModClassDamageScript();
-	new ModClassDamageSpellScript();
-	new ModClassDamageLoader();
+	new ModClassDamageScript;
+	new ModClassDamageSpellScript;
+	new ModClassDamageLoader;
 
 	// 确认加载完成
 	LOG_ERROR("server.loading", "# SPELL REGULATOR MODULE LOADED #");
