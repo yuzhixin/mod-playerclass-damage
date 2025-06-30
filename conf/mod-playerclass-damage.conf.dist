@@ -1,0 +1,151 @@
+#
+# Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license: https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
+#
+
+[worldserver]
+
+########################################
+# ModPlayerClassDamage
+########################################
+
+#
+#    ModPlayerClassDamage.Enable
+#        描述: 允许角色伤害/治疗效果调整模块.
+#        默认:         0 - 禁用
+#                     1 - 允许
+#
+ModPlayerClassDamage.Enable = 0
+
+#
+#    ModPlayerClassDamage.DebugInfo
+#        描述: 开启调试模式,可以看到技能伤害变化提示.
+#        默认:         0 - 禁用
+#                     1 - 允许
+#
+ModPlayerClassDamage.DebugInfo = 0
+
+#
+#	指导建议,如果不想调整某职业伤害调整,可以把允许调整设置为0。 
+#	而不是设置2个都为1,这样可以有效降低服务器负载。
+#
+
+#
+#    ModPlayerClassDamage.Warior
+#        描述: 允许调整战士1伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.WariorRate
+#        描述: 允许调整战士1伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0 
+#
+ModPlayerClassDamage.Warior = 0
+ModPlayerClassDamage.WariorRate = 1.0
+
+#
+#    ModPlayerClassDamage.Paladin
+
+#        描述: 允许调整骑士2伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.PaladinRate
+#        描述: 允许调整骑士2伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0 
+#
+ModPlayerClassDamage.Paladin = 0
+ModPlayerClassDamage.PaladinRate = 1.0
+
+#
+#    ModPlayerClassDamage.Hunter
+#        描述: 允许调整猎人3伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.HunterRate
+#        描述: 允许调整猎人3伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.Hunter = 0
+ModPlayerClassDamage.HunterRate = 1.0
+
+#
+#    ModPlayerClassDamage.Rogue
+#        描述: 允许调整盗贼4伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.RogueRate
+#        描述: 允许调整盗贼4伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.Rogue = 0
+ModPlayerClassDamage.RogueRate = 1.0
+
+#
+#    ModPlayerClassDamage.priest
+#        描述: 允许调整牧师5伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.priestRate
+#        描述: 允许调整牧师5伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.priest = 0
+ModPlayerClassDamage.priestRate = 1.0
+
+#
+#    ModPlayerClassDamage.Deadknight
+#        描述: 允许调整死亡骑士6伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.DeadknightRate
+#        描述: 允许调整死亡骑士6伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.Deadknight = 0
+ModPlayerClassDamage.DeadknightRate = 1.0
+
+#
+#    ModPlayerClassDamage.Shaman
+#        描述: 允许调整萨满7伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.ShamanRate
+#        描述: 允许调整萨满7伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.Shaman = 0
+ModPlayerClassDamage.ShamanRate = 1.0
+
+#
+#    ModPlayerClassDamage.Mage
+#        描述: 允许调整法师8伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.MageRate
+#        描述: 允许调整法师8伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.Mage = 0
+ModPlayerClassDamage.MageRate = 1.0
+
+#
+#    ModPlayerClassDamage.Warlock
+#        描述: 允许调整术士9伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.WarlockRate
+#        描述: 允许调整术士9伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.Warlock = 0
+ModPlayerClassDamage.WarlockRate = 1.0
+
+#
+#    ModPlayerClassDamage.Druid
+#        描述: 允许调整小德11伤害
+#        默认:         0 - 禁用
+#                     1 - 允许
+#    ModPlayerClassDamage.DruidRate
+#        描述: 允许调整小德11伤害倍率,不能为0和上面允许开关配套使用
+#        默认:         1.0
+#
+ModPlayerClassDamage.Druid = 0
+ModPlayerClassDamage.DruidRate = 1.0
