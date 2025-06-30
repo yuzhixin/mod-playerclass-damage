@@ -25,7 +25,7 @@ public:
     void ModifyHealReceived(Unit* /*target*/, Unit* healer, uint32& heal, SpellInfo const* spellInfo) override
     {
 		//直接治疗效果,不开启模块或治疗不是玩家直接退出
-        if (!PlayerClassDamageEnabled || !healer || !healer->ToPlayer() || healer->getLevel() != 80 || !PlayerClassDamageRate[healer->getClass()])
+        if (!PlayerClassDamageEnabled || !healer || !healer->ToPlayer() || healer->GetLevel() != 80 || !PlayerClassDamageRate[healer->getClass()])
             return;
 
         if (spellInfo)
@@ -50,7 +50,7 @@ public:
 
 		Unit* caster = aura->GetCaster();
 
-		if (!caster || !caster->ToPlayer() || caster->getLevel() != 80 || !PlayerClassDamageRate[caster->getClass()])
+		if (!caster || !caster->ToPlayer() || caster->GetLevel() != 80 || !PlayerClassDamageRate[caster->getClass()])
             return;
 
         if (SpellInfo const* spellInfo = aura->GetSpellInfo())
@@ -78,7 +78,7 @@ public:
     void ModifyMeleeDamage(Unit* /*target*/, Unit* attacker, uint32& damage) override
     {
 		//平砍类伤害,不开启模块或攻击者不是玩家不判定
-        if (!PlayerClassDamageEnabled || !attacker || !attacker->ToPlayer() || attacker->getLevel() != 80 || !PlayerClassDamageRate[attacker->getClass()])
+        if (!PlayerClassDamageEnabled || !attacker || !attacker->ToPlayer() || attacker->GetLevel() != 80 || !PlayerClassDamageRate[attacker->getClass()])
             return;
 
 		int32 originMelee = damage;
@@ -90,7 +90,7 @@ public:
     void ModifySpellDamageTaken(Unit* /*target*/, Unit* attacker, int32& damage, SpellInfo const* spellInfo) override
     {
 		//技能类伤害,不开启模块或攻击者不是玩家不判定
-        if (!PlayerClassDamageEnabled || !attacker || !attacker->ToPlayer() || attacker->getLevel() != 80 || !PlayerClassDamageRate[attacker->getClass()])
+        if (!PlayerClassDamageEnabled || !attacker || !attacker->ToPlayer() || attacker->GetLevel() != 80 || !PlayerClassDamageRate[attacker->getClass()])
             return;
 
         if (spellInfo)
@@ -105,7 +105,7 @@ public:
     void ModifyPeriodicDamageAurasTick(Unit* /*target*/, Unit* attacker, uint32& damage, SpellInfo const* spellInfo) override
     {
 		//持续技能类伤害,不开启模块或攻击者不是玩家不判定
-        if (!PlayerClassDamageEnabled || !attacker || !attacker->ToPlayer() || attacker->getLevel() != 80 || !PlayerClassDamageRate[attacker->getClass()])
+        if (!PlayerClassDamageEnabled || !attacker || !attacker->ToPlayer() || attacker->GetLevel() != 80 || !PlayerClassDamageRate[attacker->getClass()])
             return;
 
         if (spellInfo)
