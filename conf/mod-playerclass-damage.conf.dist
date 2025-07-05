@@ -52,7 +52,7 @@ ModPlayerClassDamage.WariorRate = 1.0
 #        默认:         1.0 
 #
 ModPlayerClassDamage.Paladin = 1
-ModPlayerClassDamage.PaladinRate = 1.3
+ModPlayerClassDamage.PaladinRate = 2.0
 
 #
 #    ModPlayerClassDamage.Hunter
